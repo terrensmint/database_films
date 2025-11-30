@@ -2,9 +2,9 @@
 
 // инициализация БД
 void db_init(Vector *db){
-    db->data = NULL;
     db->size = 0;
     db->capacity = 5;
+    db->data = malloc(sizeof(Fields) * db->capacity);
 }
 
 // вывод БД на экран
@@ -20,7 +20,8 @@ void db_print(Vector *db){
         printf("Title: %s\n", record.title);
         printf("Director: %s\n", record.director);
         printf("Release: %d\n", record.release_year);
-        printf("Rating: %f\n", record.rating);
+        printf("Rating: %.1f\n", record.rating);
+        printf("\n");
     }
 }
 
@@ -30,7 +31,6 @@ void db_add(Vector *db, Fields record){
         db->capacity = db->capacity * 2;
         db->data = realloc(db->data, db->capacity * sizeof(Fields));
     }
-
     db->data[db->size] = record;    // добавляем запись в конец массива
     db->size++;
 }
