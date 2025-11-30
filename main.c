@@ -2,6 +2,8 @@
 
 int main(){
 
+    char *database = "example.bin"; // бинарный файл с базой данных
+
     // бесконечный цикл для текстового меню
     int run = 1;
     while (run){
@@ -27,9 +29,13 @@ int main(){
         db_add(&db, sample_data[i]);
     }
 
-    db_write(&db, "netflix_db.bin");
+    db_write(&db, database);
 
-    //db_read(&db, "netflix_db.bin");
+    db_print(&db);
+
+    db_delete(&db, 3);
+    db_delete(&db, 7);
+
     db_print(&db);
 
     db_free(&db);

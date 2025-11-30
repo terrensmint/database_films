@@ -45,9 +45,24 @@ void db_search(Vector *db){
 
 // удаление записи в БД
 void db_delete(Vector *db, int id){
-    // находит запись по id
-    // если запись найдена: сдвигает записи влево
-    db->size--;
+        if (db == NULL) {
+        return;
+    }
+    
+    // Ищем элемент по id
+    for (int index = 0; index < db->size; index++) {
+        if (db->data[index].id == id) {
+            for (int j = index; j < db->size - 1; j++) {
+                db->data[j] = db->data[j + 1];
+            }
+            db->size--;
+            printf("Запись успешно удалена!\n");
+            return;
+        }
+    }
+
+    printf("Не удалось найти запись по ID = %d\n", id);
+    return;
 }
 
 // редактирование записи
