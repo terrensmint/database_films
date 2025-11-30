@@ -2,33 +2,37 @@
 
 // инициализация БД
 void db_init(Vector *db){
+    db->data = NULL;
     db->size = 0;
     db->capacity = 5;
-    
-    db->data = malloc(db->capacity *sizeof(Fields));
 }
 
 // вывод БД на экран
 void db_print(Vector *db){
-    // читает файл
-    // выводит записи в консоль
+    if (db->size == 0){
+        printf("База данных пуста.\n");
+        return;
+    }
+    
+    for (int i = 0; i < db->size; i++){
+        Fields record = db->data[i];
+        printf("ID: %d\n", record.id);
+        printf("Title: %s\n", record.title);
+        printf("Director: %s\n", record.director);
+        printf("Release: %d\n", record.release_year);
+        printf("Rating: %f\n", record.rating);
+    }
 }
 
 // добавление новой записи в БД
 void db_add(Vector *db, Fields record){
-    if (db->size < db->capacity){
-        
-        // добавляет запись в БД
-        
-        db->size++;
-    } else{
+    if (db->size >= db->capacity){
         db->capacity = db->capacity * 2;
         db->data = realloc(db->data, db->capacity * sizeof(Fields));
-        
-        // добавляет запись в БД
-        
-        db->size++;
     }
+
+    db->data[db->size] = record;    // добавляем запись в конец массива
+    db->size++;
 }
 
 // меню поиска

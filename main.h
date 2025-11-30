@@ -4,11 +4,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define STR_LEN 50
+
 // поля БД
 typedef struct Fields {
     int id;             // первичный ключ
-    char title[50];     // название
-    char director[20];  // режиссер
+    char title[STR_LEN];     // название
+    char director[STR_LEN];  // режиссер
     int release_year;   // год выпуска
     float rating;       // рейтинг
 } Fields;
@@ -23,7 +25,7 @@ typedef struct Vector {
 // функции для БД
 void db_init(Vector *db);  // инициализация БД
 void db_print(Vector *db);   // вывод БД на экран
-void db_add(Vector *db, Fields *record);  // добавление новой записи в БД
+void db_add(Vector *db, Fields record);  // добавление новой записи в БД
 void db_search(Vector *db);   // поиск
 void db_delete(Vector *db, int id);   // удаление записи в БД
 void db_edit(Vector *db, int id);   // редактирование записи
