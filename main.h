@@ -21,18 +21,18 @@ typedef struct Vector {
 } Vector;
 
 // функции для БД
-db_init(Vector *db);  // инициализация БД
-db_print(Vector *db);   // вывод БД на экран
-db_add(Vector *db, Fields *record);  // добавление новой записи в БД
-db_search(Vector *db);   // поиск
-db_delete(Vector *db, int id);   // удаление записи в БД
-db_edit(Vector *db, int id);
-db_free(Vector *db);  // освобождение памяти
+void db_init(Vector *db);  // инициализация БД
+void db_print(Vector *db);   // вывод БД на экран
+void db_add(Vector *db, Fields *record);  // добавление новой записи в БД
+void db_search(Vector *db);   // поиск
+void db_delete(Vector *db, int id);   // удаление записи в БД
+void db_edit(Vector *db, int id);   // редактирование записи
+void db_free(Vector *db);  // освобождение памяти
 
 
 // функции для работы с бинарными файлами
-db_read(Vector *db, char *filename);    // чтение
-db_write(Vector *db, char *filename);   // запись
+void db_read(Vector *db, char *filename);    // чтение
+void db_write(Vector *db, char *filename);   // запись
 
 
 // функции для поиска в БД
