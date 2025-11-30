@@ -5,15 +5,20 @@ void db_init(Vector *db){
     db->size = 0;
     db->capacity = 5;
     db->data = malloc(sizeof(Fields) * db->capacity);
+    if (db->data == NULL){
+        printf("Ошибка выделения памяти\n");
+        exit(1);
+    }
 }
 
 // вывод БД на экран
 void db_print(Vector *db){
     if (db->size == 0){
         printf("База данных пуста.\n");
+        printf("Импортируйте базу данных или добавьте новые элементы.\n");
         return;
     }
-    
+    printf("=====================\n");
     for (int i = 0; i < db->size; i++){
         Fields record = db->data[i];
         printf("ID: %d\n", record.id);
@@ -21,8 +26,9 @@ void db_print(Vector *db){
         printf("Director: %s\n", record.director);
         printf("Release: %d\n", record.release_year);
         printf("Rating: %.1f\n", record.rating);
-        printf("\n");
+        printf("--------\n");
     }
+    printf("=====================\n");
 }
 
 // добавление новой записи в БД

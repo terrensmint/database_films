@@ -2,41 +2,96 @@
 
 int main(){
 
-    char *database = "example.bin"; // бинарный файл с базой данных
+    printf("=================================\n");
+    printf("*    Управление базой данных    *\n");
+    printf("*            Netflix            *\n");
+    printf("=================================\n");
 
+    char *database_file = "example.bin"; // бинарный файл с базой данных
+    Vector db;
+    db_init(&db);
+    
     // бесконечный цикл для текстового меню
     int run = 1;
     while (run){
-        run = 0;
+        printf("\n");
+        printf("===[ Текущая база данных: %s ]===\n", database_file);
+        printf("\nСписок команд для управления базой данных:\n");
+        printf("--------\n");
+        printf("0 - Завершить работу программы.\n");            // run = 0
+        printf("1 - Импортировать базу данных.\n");             // db_read
+        printf("2 - Сохранить базу данных.\n");                 // db_write
+        printf("--------\n");
+        printf("3 - Вывести базу данных на экран.\n");          // db_print
+        printf("4 - Добавить запись в базу данных.\n");         // db_add
+        printf("5 - Удалить запись из базы данных.\n");         // db_delete
+        printf("6 - Найти запись в базе данных.\n");            // db_search
+        printf("7 - Редактировать запись в базе данных.\n");    // db_edit
+        printf("--------\n");
+        printf("Введите номер команды: ");
+        int command;
+        while (scanf("%d", &command) == 0){
+            printf("\n====[ Неверный ввод ]====\n");
+            printf("Пожалуйста, введите номер команды: ");
+            
+            // очистка буфера
+            int c;
+            while ((c = getchar()) != '\n' && c != EOF);
+        }
+
+        printf("\n");
+        switch (command){
+            case 0:
+                run = 0;
+                break;
+
+            case 1:
+                db_read(&db, database_file);
+                printf("База данных успешно импортирована!\n");
+                break;
+
+            case 2:
+                db_write(&db, database_file);
+                printf("База данных успешно сохранена в файл %s!\n", database_file);
+                break;
+
+            case 3:
+                db_print(&db);
+                break;
+
+            case 4:
+                // пользователь заполняет запись по полям
+                // Fields record;
+                // db_add(&db, record);
+                break;
+
+            case 5:
+                // пользователь вводит id записи, которую необходимо удалить
+                // db_delete(%db, id);
+                break;
+
+            case 6:
+                db_search(&db);
+                break;
+
+            case 7:
+                // пользователь вводит id записи, которую необходимо редактировать
+                // db_edit(%db, id);
+                break;
+
+            default:
+                printf("====[ Неверный ввод ]====\n");
+                printf("Команды с номером %d не существует!\n", command);
+        }
+
+        // подтверждение для возвращения в основное меню с командами
+        if (run == 1){
+            int c;
+            while ((c = getchar()) != '\n' && c != EOF);
+            printf("Нажмите Enter, чтобы вернуться в меню...\n");
+            while ((c = getchar()) != '\n' && c != EOF);
+        }
     }
-
-    Vector db;
-    db_init(&db);
-
-    // Тестовые данные Netflix
-
-    Fields sample_data[] = {
-        {1, "Stranger Things", "Duffer Brothers", 2016, 8.7},
-        {2, "The Crown", "Peter Morgan", 2016, 8.6},
-        {3, "The Witcher", "Lauren Schmidt", 2019, 8.2},
-        {4, "Breaking Bad", "Vince Gilligan", 2008, 9.5},
-        {5, "Matrix", "The Wachowskis", 1990, 8.7}
-    };
-
-        // Добавляем все записи в базу
-    int sample_count = sizeof(sample_data) / sizeof(sample_data[0]);
-    for (int i = 0; i < sample_count; i++) {
-        db_add(&db, sample_data[i]);
-    }
-
-    db_write(&db, database);
-
-    db_print(&db);
-
-    db_delete(&db, 3);
-    db_delete(&db, 7);
-
-    db_print(&db);
 
     db_free(&db);
 
