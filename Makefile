@@ -1,6 +1,6 @@
 CC = gcc
 TARGET = app
-OBJECTS = main.o database.o
+OBJECTS = main.o database.o filefuncs.o search.o
 
 all: $(OBJECTS)
 	$(CC) $(OBJECTS) -o $(TARGET)
