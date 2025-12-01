@@ -1,5 +1,10 @@
 #include "main.h"
 
+void clear_buffer(){    // очистка буфера
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+
 int print_commands(char *database_file){
     printf("\n");
     printf("===[ Текущая база данных: %s ]===\n", database_file);
@@ -20,10 +25,7 @@ int print_commands(char *database_file){
     while (scanf("%d", &command) == 0){
         printf("\n====[ Неверный ввод ]====\n");
         printf("Пожалуйста, введите номер команды: ");
-                
-        // очистка буфера
-        int c;
-        while ((c = getchar()) != '\n' && c != EOF);
+        clear_buffer();
     }
     return command;
 }
@@ -95,4 +97,47 @@ void cmd_export(Vector *db, char *database_file){
 
     db_write(db, database_file);
     printf("База данных успешно сохранена в файл %s!\n", database_file);
+}
+
+void cmd_add(Vector *db){
+    printf("====[ Создание новой записи ]====\n");
+    printf("Заполните поля новой записи:\n\n");
+    
+    Fields record;
+
+    printf("[ID] = %d\n", db->data[db->size-1].id + 1);
+    record.id = db->data[db->size-1].id + 1;
+    
+    printf("[TITLE] = ");
+    while (scanf("%s", &record.title) == 0){
+        printf("\n====[ Неверный ввод ]====\n");
+        printf("Введите наименование фильма: ");
+        clear_buffer();
+    }
+    clear_buffer();
+
+    printf("[DIRECTOR] = ");
+    while (scanf("%s", &record.director) == 0){
+        printf("\n====[ Неверный ввод ]====\n");
+        printf("Введите имя режиссера: ");
+        clear_buffer();
+    }
+    clear_buffer();
+
+    printf("[YEAR OF RELEASE] = ");
+    while (scanf("%d", &record.release_year) == 0){
+        printf("\n====[ Неверный ввод ]====\n");
+        printf("Введите год выпуска фильма: ");
+        clear_buffer();
+    }
+    clear_buffer();
+
+    printf("[RATING] = ");
+    while (scanf("%f", &record.rating) == 0){
+        printf("\n====[ Неверный ввод ]====\n");
+        printf("Введите рейтинг фильма: ");
+        clear_buffer();
+    }
+
+    db_add(db, record);
 }

@@ -41,6 +41,7 @@ int main(){
                 break;
 
             case 4:     // добавление записи в базу данных
+                cmd_add(&db);
                 // пользователь заполняет запись по полям
                 // Fields record;
                 // db_add(&db, record);
@@ -67,10 +68,9 @@ int main(){
 
         // подтверждение для возвращения в основное меню с командами
         if (run == 1){
-            int c;
-            while ((c = getchar()) != '\n' && c != EOF);
+            clear_buffer();
             printf("Нажмите Enter, чтобы вернуться в меню...\n");
-            while ((c = getchar()) != '\n' && c != EOF);
+            clear_buffer();
         }
     }
 

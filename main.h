@@ -53,5 +53,8 @@ int print_commands(char *database_file);    // вывод списка кома�
 void cmd_exit(Vector *db, char *database_file);    // завершение программы
 void cmd_import(Vector *db, char *database_file, char *default_db); // импорт БД
 void cmd_export(Vector *db, char *database_file);   // экспорт БД
+void cmd_add(Vector *db);   // добавление записи в БД
+
+void clear_buffer(); // очистка буфера
 
 #endif
