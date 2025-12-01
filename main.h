@@ -50,7 +50,7 @@ int compare(Fields *record, Fields *search_rec);
 
 // функции консольных команд для управления БД
 int print_commands(char *database_file);    // вывод списка команд
-void cmd_exit();    // завершение программы
+void cmd_exit(Vector *db, char *database_file);    // завершение программы
 void cmd_import(Vector *db, char *database_file, char *default_db); // импорт БД
 void cmd_export(Vector *db, char *database_file);   // экспорт БД
 

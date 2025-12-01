@@ -24,7 +24,7 @@ int main(){
         printf("\n");
         switch (command){
             case 0:     // закрытие программы
-                cmd_exit();
+                cmd_exit(&db, database_file);
                 run = 0;
                 break;
 
