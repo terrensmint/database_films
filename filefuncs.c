@@ -10,8 +10,6 @@ void db_write(Vector *db, char *filename){
     fwrite(db->data, sizeof(Fields), db->size, file);
 
     fclose(file);
-
-    printf("Данные успешно записаны.\n");
 }
 
 // чтение базы данных

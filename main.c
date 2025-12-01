@@ -46,28 +46,40 @@ int main(){
 
         printf("\n");
         switch (command){
-            case 0:
+            case 0:     // закрытие программы
                 run = 0;
                 break;
 
-            case 1:
+            case 1:     // импорт базы данных
+                // очистка памяти структуры для новой БД
                 db_free(&db);
                 db_init(&db);
                 printf("Введите название файла, который необходимо импортировать:\n");
                 if (scanf("%s", &database_file) == 0){
                     printf("Введено некорректное название. Будет импортирована база данных по умолчанию.\n");
                 }
-                if (db_read(&db, database_file) == 1){
+                if (db_read(&db, database_file) == 1){  // если не получилось открыть файл
                     printf("====[ Ошибка ]====\n");
-                    printf("Файл с названием \'%s\' не найден.\n", database_file);
-                    strcpy(database_file, default_db);
+                    printf("Файл с названием '%s' не найден.\n", database_file);
+                    strcpy(database_file, default_db);  // возвращаемся к файлу по умолчанию
                     db_read(&db, database_file);
                 } else{
                     printf("База данных успешно импортирована!\n");
                 }
                 break;
 
-            case 2:
+            case 2:     // экспорт базы данных
+                char database_write[STR_LEN];
+                printf("Введите название файла, в который хотите экспортировать базу данных.\n");
+                printf("(Введите 0 для экспорта в текущую базу данных)\n");
+                if (scanf("%s", &database_write) == 0){
+                    printf("Введено некорректное название. Экспорт отменен.\n");
+                    break;
+                }
+                if (strcmp(database_write, "0") != 0){
+                    strcpy(database_file, database_write);
+                }
+
                 db_write(&db, database_file);
                 printf("База данных успешно сохранена в файл %s!\n", database_file);
                 break;
