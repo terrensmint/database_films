@@ -15,10 +15,10 @@ void db_write(Vector *db, char *filename){
 }
 
 // чтение базы данных
-void db_read(Vector *db, char *filename){
+int db_read(Vector *db, char *filename){
     FILE *file = fopen(filename, "rb");
     if (file == NULL){
-        return;
+        return 1;
     }
 
     Fields record;
@@ -26,6 +26,6 @@ void db_read(Vector *db, char *filename){
     while (fread(&record, sizeof(Fields), 1, file) == 1){
         db_add(db, record);
     }
-
     fclose(file);
+    return 0;
 }

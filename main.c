@@ -2,17 +2,22 @@
 
 int main(){
 
+    // стартовые настройки
+    char *default_db = "example.bin"; // база данных по умолчанию
+    char database_file[STR_LEN]; // бинарный файл с базой данных
+    strcpy(database_file, default_db);
+    Vector db;
+    db_init(&db);
+    db_read(&db, database_file);
+
+    int run = 1;
+
     printf("=================================\n");
     printf("*    Управление базой данных    *\n");
     printf("*            Netflix            *\n");
     printf("=================================\n");
-
-    char *database_file = "example.bin"; // бинарный файл с базой данных
-    Vector db;
-    db_init(&db);
     
     // бесконечный цикл для текстового меню
-    int run = 1;
     while (run){
         printf("\n");
         printf("===[ Текущая база данных: %s ]===\n", database_file);
@@ -46,8 +51,20 @@ int main(){
                 break;
 
             case 1:
-                db_read(&db, database_file);
-                printf("База данных успешно импортирована!\n");
+                db_free(&db);
+                db_init(&db);
+                printf("Введите название файла, который необходимо импортировать:\n");
+                if (scanf("%s", &database_file) == 0){
+                    printf("Введено некорректное название. Будет импортирована база данных по умолчанию.\n");
+                }
+                if (db_read(&db, database_file) == 1){
+                    printf("====[ Ошибка ]====\n");
+                    printf("Файл с названием \'%s\' не найден.\n", database_file);
+                    strcpy(database_file, default_db);
+                    db_read(&db, database_file);
+                } else{
+                    printf("База данных успешно импортирована!\n");
+                }
                 break;
 
             case 2:

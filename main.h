@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define STR_LEN 50
 
@@ -33,7 +34,7 @@ void db_free(Vector *db);  // освобождение памяти
 
 
 // функции для работы с бинарными файлами
-void db_read(Vector *db, char *filename);    // чтение
+int db_read(Vector *db, char *filename);    // чтение
 void db_write(Vector *db, char *filename);   // запись
 
 
