@@ -57,3 +57,5 @@ dkms.conf
 # Базы данных
 *.bin
 !example.bin
+
+.vscode
