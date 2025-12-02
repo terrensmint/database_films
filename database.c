@@ -41,12 +41,39 @@ void db_add(Vector *db, Fields record){
     db->size++;
 }
 
+int compare(Fields record, Fields search_rec){
+    // Условность: -1 для числовых полей, "" для строковых значит незаполненное поле.
+    if (search_rec.id != -1 && record.id != search_rec.id) return 0;
+    if (strcmp(search_rec.title, "") != 0 && strcmp(record.title, search_rec.title) != 0) return 0;
+    if (strcmp(search_rec.director, "") != 0 && strcmp(record.director, search_rec.director) != 0) return 0;
+    if (search_rec.release_year != -1 && record.release_year != search_rec.release_year) return 0;
+    if (search_rec.rating != -1.0 && record.rating != search_rec.rating) return 0;
+
+    return 1;
+}
+
 // меню поиска
-void db_search(Vector *db){
-    // запрашивает у пользователя, по каким полям сравниваем
-    // пользователь заполняет Fields search_rec - запись для поиска, в ней м.б. пустые поля
-    // через search.c программа сравнивает все записи БД с search_rec
-    // если находятся совпадения, записи выводятся в консоль
+void db_search(Vector *db, Fields search_rec){
+    int is_found = 0;   // флаг, найдена ли хотя бы одна запись
+
+    printf("=====================\n");
+    for (int i = 0; i < db->size; i++){
+        if (compare(db->data[i], search_rec) == 1){
+            Fields record = db->data[i];
+            printf("ID: %d\n", record.id);
+            printf("Title: %s\n", record.title);
+            printf("Director: %s\n", record.director);
+            printf("Release: %d\n", record.release_year);
+            printf("Rating: %.1f\n", record.rating);
+            printf("--------\n");
+            is_found = 1;
+        }
+    }
+    printf("Поиск завершен.\n");
+    if (is_found == 0){
+        printf("В результате поиска не найдена ни одна запись.\n");
+    }
+    printf("=====================\n");
 }
 
 // удаление записи в БД

@@ -134,9 +134,9 @@ void input_string(const char *field, char *buffer, int size) {
 }
 
 
+// добавление записи
 void cmd_add(Vector *db){
-    printf("====[ Создание новой записи ]====\n");
-    printf("\n");
+    printf("====[ Создание новой записи ]====\n\n");
     
     Fields record;  // запись для заполнения пользователем
 
@@ -173,9 +173,9 @@ void cmd_add(Vector *db){
 }
 
 
+// удаление записи
 void cmd_delete(Vector *db){
-    printf("====[ Удаление записи ]====\n");
-    printf("\n");
+    printf("====[ Удаление записи ]====\n\n");
 
     int rec_id;
     printf("Введите ID записи, которую хотите удалить: ");
@@ -186,4 +186,94 @@ void cmd_delete(Vector *db){
     }
 
     db_delete(db, rec_id);
+}
+
+
+// вопрос в консоль, заполнить ли поле
+int fill_question(char *field){
+    printf("Заполнить [%s]? (1 - Да, 0 - Нет): ", field);
+            int answer;
+            while (scanf("%d", &answer) == 0){
+                printf("\n====[ Неверный ввод ]====\n");
+                printf("Заполнить [%s]? (1 - Да, 0 - Нет): ", field);
+                clear_buffer();
+            }
+            if (answer == 1 || answer == 0) return answer;
+            else return fill_question(field);
+}
+
+
+void cmd_search(Vector *db){
+    printf("====[ Поиск ]====\n");
+    printf("Выберите команду:\n");
+    printf("0 - Отменить поиск\n");
+    printf("1 - Искать по ID\n");
+    printf("2 - Искать по другим полям\n");
+    
+    int answer;
+    if (scanf("%d", &answer) == 0){     // если не удалось считать число с пользовательского ввода
+        printf("====[ Неверный ввод ]====\n");
+        printf("Поиск отменен.\n");
+        return;
+    }
+
+    // запись, по которой будут искаться записи в базе данных. 
+    // Пусть -1 для числовых полей, '\0' для строковых значит незаполненное поле.
+    Fields search_rec;
+    search_rec.id = -1;
+    search_rec.title[0] = '\0';
+    search_rec.director[0] = '\0';
+    search_rec.release_year = -1;
+    search_rec.rating = -1.0;
+
+    switch (answer){
+        case 0:     // отменить поиск
+            printf("Поиск отменен.\n");
+            return;
+
+        case 1:     // искать по id
+            printf("Введите номер ID, по которому необходимо найти запись: ");
+            while (scanf("%d", &search_rec.id) == 0){
+                printf("\n====[ Неверный ввод ]====\n");
+                printf("Введите ID записи, которую хотите найти: ");
+                clear_buffer();
+            }
+            db_search(db, search_rec);
+            break;
+
+        case 2:     // искать по другим полям
+            printf("Заполните поля, по которым хотите найти запись.\n");
+            if (fill_question("TITLE") == 1){
+                clear_buffer();
+                input_string("TITLE", search_rec.title, sizeof(search_rec.title));
+            }
+            if (fill_question("DIRECTOR") == 1){
+                clear_buffer();
+                input_string("DIRECTOR", search_rec.director, sizeof(search_rec.director));
+            }
+            if (fill_question("YEAR OF RELEASE") == 1){
+                printf("[YEAR OF RELEASE] = ");
+                while (scanf("%d", &search_rec.release_year) == 0){
+                    printf("\n====[ Неверный ввод ]====\n");
+                    printf("Введите год выпуска фильма: ");
+                    clear_buffer();
+                }
+            }
+
+            if (fill_question("RATING") == 1){
+                printf("[RATING] = ");
+                while (scanf("%f", &search_rec.rating) == 0){
+                    printf("\n====[ Неверный ввод ]====\n");
+                    printf("Введите рейтинг фильма: ");
+                    clear_buffer();
+                }
+            }
+            db_search(db, search_rec);
+            break;
+
+        default:    // другие числа
+            printf("====[ Неверный ввод ]====\n");
+            printf("Введена неизвестная команда. Поиск отменен.\n");
+            return;
+    }
 }
