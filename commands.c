@@ -5,6 +5,7 @@ void clear_buffer(){    // очистка буфера
     while ((c = getchar()) != '\n' && c != EOF);
 }
 
+
 int print_commands(char *database_file){
     printf("\n");
     printf("===[ Текущая база данных: %s ]===\n", database_file);
@@ -29,6 +30,7 @@ int print_commands(char *database_file){
     }
     return command;
 }
+
 
 void cmd_exit(Vector *db, char *database_file){
     char *autosave = "autosave.bin";    // файл для автосохранения
@@ -65,6 +67,7 @@ void cmd_exit(Vector *db, char *database_file){
     return;
 }
 
+
 void cmd_import(Vector *db, char *database_file, char *default_db){
     // очистка памяти структуры для новой БД
     db_free(db);
@@ -83,6 +86,7 @@ void cmd_import(Vector *db, char *database_file, char *default_db){
     }
 }
 
+
 void cmd_export(Vector *db, char *database_file){
     char database_write[STR_LEN];
     printf("Введите название файла, в который хотите экспортировать базу данных.\n");
@@ -98,6 +102,7 @@ void cmd_export(Vector *db, char *database_file){
     db_write(db, database_file);
     printf("База данных успешно сохранена в файл %s!\n", database_file);
 }
+
 
 // проверка ввода строки
 void input_string(const char *field, char *buffer, int size) {
@@ -128,9 +133,10 @@ void input_string(const char *field, char *buffer, int size) {
     }
 }
 
+
 void cmd_add(Vector *db){
     printf("====[ Создание новой записи ]====\n");
-    printf("Заполните поля новой записи:\n\n");
+    printf("\n");
     
     Fields record;  // запись для заполнения пользователем
 
@@ -164,4 +170,20 @@ void cmd_add(Vector *db){
     }
 
     db_add(db, record);
+}
+
+
+void cmd_delete(Vector *db){
+    printf("====[ Удаление записи ]====\n");
+    printf("\n");
+
+    int rec_id;
+    printf("Введите ID записи, которую хотите удалить: ");
+    while (scanf("%d", &rec_id) == 0){
+        printf("\n====[ Неверный ввод ]====\n");
+        printf("Введите ID записи, которую хотите удалить: ");
+        clear_buffer();
+    }
+
+    db_delete(db, rec_id);
 }

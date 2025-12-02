@@ -54,6 +54,7 @@ void cmd_exit(Vector *db, char *database_file);    // завершение пр�
 void cmd_import(Vector *db, char *database_file, char *default_db); // импорт БД
 void cmd_export(Vector *db, char *database_file);   // экспорт БД
 void cmd_add(Vector *db);   // добавление записи в БД
+void cmd_delete(Vector *db);    // удаление записи из БД
 
 void clear_buffer(); // очистка буфера
 
