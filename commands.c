@@ -99,30 +99,54 @@ void cmd_export(Vector *db, char *database_file){
     printf("База данных успешно сохранена в файл %s!\n", database_file);
 }
 
+// проверка ввода строки
+void input_string(const char *field, char *buffer, int size) {
+    printf("[%s] = ", field);
+    while (1) {
+        if (fgets(buffer, size, stdin) == 0) {
+            printf("\n====[ Неверный ввод ]====\n");
+            printf("[%s] = ", field);
+            continue;
+        }
+
+        // Убираем \n
+        for (int i = 0; buffer[i] != '\0'; i++) {
+            if (buffer[i] == '\n') {
+                buffer[i] = '\0';
+                break;
+            }
+        }
+
+        // Если строка пустая
+        if (strlen(buffer) == 0) {
+            printf("\n====[ Неверный ввод ]====\n");
+            printf("[%s] = ", field);
+            continue;
+        }
+
+        break;
+    }
+}
+
 void cmd_add(Vector *db){
     printf("====[ Создание новой записи ]====\n");
     printf("Заполните поля новой записи:\n\n");
     
-    Fields record;
+    Fields record;  // запись для заполнения пользователем
 
-    printf("[ID] = %d\n", db->data[db->size-1].id + 1);
-    record.id = db->data[db->size-1].id + 1;
+    int rec_id;
+    if (db->size == 0){     // если в базе данных нет записей
+        rec_id = 1;
+    } else {
+        rec_id = db->data[db->size-1].id + 1;
+    }
+    printf("[ID] = %d\n", rec_id);
+    record.id = rec_id;
     
-    printf("[TITLE] = ");
-    while (scanf("%s", &record.title) == 0){
-        printf("\n====[ Неверный ввод ]====\n");
-        printf("Введите наименование фильма: ");
-        clear_buffer();
-    }
     clear_buffer();
+    input_string("TITLE", record.title, sizeof(record.title));
+    input_string("DIRECTOR", record.director, sizeof(record.director));
 
-    printf("[DIRECTOR] = ");
-    while (scanf("%s", &record.director) == 0){
-        printf("\n====[ Неверный ввод ]====\n");
-        printf("Введите имя режиссера: ");
-        clear_buffer();
-    }
-    clear_buffer();
 
     printf("[YEAR OF RELEASE] = ");
     while (scanf("%d", &record.release_year) == 0){
