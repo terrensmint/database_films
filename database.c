@@ -53,7 +53,7 @@ int compare(Fields record, Fields search_rec){
 }
 
 // меню поиска
-void db_search(Vector *db, Fields search_rec){
+int db_search(Vector *db, Fields search_rec){
     int is_found = 0;   // флаг, найдена ли хотя бы одна запись
 
     printf("=====================\n");
@@ -74,6 +74,7 @@ void db_search(Vector *db, Fields search_rec){
         printf("В результате поиска не найдена ни одна запись.\n");
     }
     printf("=====================\n");
+    return is_found;
 }
 
 // удаление записи в БД
@@ -99,11 +100,16 @@ void db_delete(Vector *db, int id){
 }
 
 // редактирование записи
-void db_edit(Vector *db, int id){
-    // находит запись
-    // запрашивает, какое поле изменить
-    // запрашивает значение, на которое необходимо изменить поле
-    // записывает данные в запись
+void db_edit(Vector *db, Fields record){
+    for (int i = 0; i < db->size; i++){
+        if (db->data[i].id == record.id){
+            strcpy(db->data[i].title, record.title);
+            strcpy(db->data[i].director, record.director);
+            db->data[i].release_year = record.release_year;
+            db->data[i].rating = record.rating;
+            return;
+        }
+    }
 }
 
 // освобождение памяти

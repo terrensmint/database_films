@@ -232,13 +232,19 @@ void cmd_search(Vector *db){
             return;
 
         case 1:     // искать по id
-            printf("Введите номер ID, по которому необходимо найти запись: ");
-            while (scanf("%d", &search_rec.id) == 0){
-                printf("\n====[ Неверный ввод ]====\n");
-                printf("Введите ID записи, которую хотите найти: ");
-                clear_buffer();
+            while (1){
+                printf("Введите номер ID, по которому необходимо найти запись: ");
+                while (scanf("%d", &search_rec.id) == 0){
+                    printf("\n====[ Неверный ввод ]====\n");
+                    printf("Введите номер ID, по которому необходимо найти запись: ");
+                    clear_buffer();
+                }
+                if (search_rec.id > 0){
+                    db_search(db, search_rec);
+                    break;
+                } 
+                else printf("\n====[ Неверный ввод ]====\n");
             }
-            db_search(db, search_rec);
             break;
 
         case 2:     // искать по другим полям
@@ -275,5 +281,76 @@ void cmd_search(Vector *db){
             printf("====[ Неверный ввод ]====\n");
             printf("Введена неизвестная команда. Поиск отменен.\n");
             return;
+    }
+}
+
+void cmd_edit(Vector *db){
+    printf("====[ Редактирование записи ]====\n\n");
+
+    Fields record;
+    record.title[0] = '\0';
+    record.director[0] = '\0';
+    record.release_year = -1;
+    record.rating = -1.0;
+
+    while (1){
+        printf("Введите ID записи, которую необходимо отредактировать: ");
+        while (scanf("%d", &record.id) == 0){
+            printf("\n====[ Неверный ввод ]====\n");
+            printf("Введите ID записи, которую необходимо отредактировать: ");
+            clear_buffer();
+        }
+        if (record.id >= 0) break;
+        else{
+            printf("\n====[ Неверный ввод ]====\n");
+            clear_buffer();
+        }
+    }
+    
+    if (db_search(db, record) == 0){
+        printf("Редактирование несуществующей записи невозможно.\n");
+        return;
+    } else{
+        // находим запись по id, копируем ее поля в record
+        for (int i = 0; i < db->size; i++){
+            Fields db_rec = db->data[i];
+            if (db_rec.id == record.id){
+                strcpy(record.title, db_rec.title);
+                strcpy(record.director, db_rec.director);
+                record.release_year = db_rec.release_year;
+                record.rating = db_rec.rating;
+                break;
+            }
+        }
+
+        printf("Заполните поля, которые хотите отредактировать.\n");
+        if (fill_question("TITLE") == 1){
+            clear_buffer();
+            input_string("TITLE", record.title, sizeof(record.title));
+        }
+        if (fill_question("DIRECTOR") == 1){
+            clear_buffer();
+            input_string("DIRECTOR", record.director, sizeof(record.director));
+        }
+        if (fill_question("YEAR OF RELEASE") == 1){
+            printf("[YEAR OF RELEASE] = ");
+            while (scanf("%d", &record.release_year) == 0){
+                printf("\n====[ Неверный ввод ]====\n");
+                printf("Введите год выпуска фильма: ");
+                clear_buffer();
+            }
+        }
+
+        if (fill_question("RATING") == 1){
+            printf("[RATING] = ");
+            while (scanf("%f", &record.rating) == 0){
+                printf("\n====[ Неверный ввод ]====\n");
+                printf("Введите рейтинг фильма: ");
+                clear_buffer();
+            }
+        }
+
+        db_edit(db, record);
+        printf("Запись успешно отредактирована!\n");
     }
 }
