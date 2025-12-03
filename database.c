@@ -36,11 +36,16 @@ void db_add(Vector *db, Fields record){
     if (db->size >= db->capacity){
         db->capacity = db->capacity * 2;
         db->data = realloc(db->data, db->capacity * sizeof(Fields));
+        if (db->data == NULL){
+            printf("Ошибка выделения памяти\n");
+            exit(1);
+        }
     }
     db->data[db->size] = record;    // добавляем запись в конец массива
     db->size++;
 }
 
+// функция для сравнения двух записей
 int compare(Fields record, Fields search_rec){
     // Условность: -1 для числовых полей, "" для строковых значит незаполненное поле.
     if (search_rec.id != -1 && record.id != search_rec.id) return 0;

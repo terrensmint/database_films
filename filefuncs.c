@@ -1,6 +1,6 @@
 #include "main.h"
 
-// перезапись базы данных в файле
+// запись базы данных в бинарный файл
 void db_write(Vector *db, char *filename){
     FILE *file = fopen(filename, "wb");
     if (file == NULL){
@@ -8,7 +8,6 @@ void db_write(Vector *db, char *filename){
     }
 
     fwrite(db->data, sizeof(Fields), db->size, file);
-
     fclose(file);
 }
 

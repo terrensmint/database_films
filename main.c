@@ -3,14 +3,14 @@
 int main(){
 
     // стартовые настройки
-    char *default_db = "example.bin"; // база данных по умолчанию
-    char database_file[STR_LEN]; // бинарный файл с базой данных
+    char *default_db = "example.bin"; // название базы данных по умолчанию
+    char database_file[STR_LEN]; // название файла с базой данных
     strcpy(database_file, default_db);
-    Vector db;
-    db_init(&db);
-    db_read(&db, database_file);
+    Vector db;  // база данных - умный массив
+    db_init(&db);   // инициализация
+    db_read(&db, database_file);    // выписываем бд из файла в вектор
 
-    int run = 1;
+    int run = 1;    // флаг для бесконечного цикла текстового меню
 
     printf("=================================\n");
     printf("*    Управление базой данных    *\n");
@@ -19,7 +19,7 @@ int main(){
     
     // бесконечный цикл для текстового меню
     while (run){
-        int command = print_commands(database_file);
+        int command = print_commands(database_file);    // вывод списка команд
 
         printf("\n");
         switch (command){

@@ -6,6 +6,7 @@ void clear_buffer(){    // очистка буфера
 }
 
 
+// вывод списка команд в консоль
 int print_commands(char *database_file){
     printf("\n");
     printf("===[ Текущая база данных: %s ]===\n", database_file);
@@ -32,6 +33,7 @@ int print_commands(char *database_file){
 }
 
 
+// выход из программы
 void cmd_exit(Vector *db, char *database_file){
     char *autosave = "autosave.bin";    // файл для автосохранения
     int is_correct = 1;     // флаг для предупреждений изза некорректного ввода
@@ -88,7 +90,7 @@ void cmd_import(Vector *db, char *database_file, char *default_db){
 
 
 void cmd_export(Vector *db, char *database_file){
-    char database_write[STR_LEN];
+    char database_write[STR_LEN];   // название файла, куда будет сохранена БД
     printf("Введите название файла, в который хотите экспортировать базу данных.\n");
     printf("(Введите 0 для экспорта в текущий файл)\n");
     if (scanf("%s", database_write) == 0){
@@ -138,7 +140,7 @@ void input_string(const char *field, char *buffer, int size) {
 void cmd_add(Vector *db){
     printf("====[ Создание новой записи ]====\n\n");
     
-    Fields record;  // запись для заполнения пользователем
+    Fields record;  // пустая запись для заполнения пользователем
 
     int rec_id;
     if (db->size == 0){     // если в базе данных нет записей
@@ -203,6 +205,7 @@ int fill_question(char *field){
 }
 
 
+// поиск записи
 void cmd_search(Vector *db){
     printf("====[ Поиск ]====\n");
     printf("Выберите команду:\n");
@@ -265,7 +268,6 @@ void cmd_search(Vector *db){
                     clear_buffer();
                 }
             }
-
             if (fill_question("RATING") == 1){
                 printf("[RATING] = ");
                 while (scanf("%f", &search_rec.rating) == 0){
@@ -284,6 +286,8 @@ void cmd_search(Vector *db){
     }
 }
 
+
+// редактирование записи
 void cmd_edit(Vector *db){
     printf("====[ Редактирование записи ]====\n\n");
 
@@ -340,7 +344,6 @@ void cmd_edit(Vector *db){
                 clear_buffer();
             }
         }
-
         if (fill_question("RATING") == 1){
             printf("[RATING] = ");
             while (scanf("%f", &record.rating) == 0){
